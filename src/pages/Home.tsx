@@ -2,6 +2,7 @@ import React from "react";
 import { useWeatherGPT } from "../lib/WeatherGPTContext";
 import { WeatherHero } from "../components/weather/WeatherHero";
 import { ForecastStrip } from "../components/weather/ForecastStrip";
+import { HourlyTrendsWidget } from "../components/weather/HourlyTrendsWidget";
 import { RiskCard } from "../components/weather/RiskCard";
 import { MonthlyRiskSummary } from "../components/weather/MonthlyRiskSummary";
 import { VoiceTrigger } from "../components/voice/VoiceTrigger";
@@ -32,6 +33,9 @@ export const Home: React.FC = () => {
 
       {/* Weather Hero Card */}
       <WeatherHero />
+
+      {/* 24-Hour Trends Chart Widget (Recharts) */}
+      <HourlyTrendsWidget />
 
       {/* Forecast Strip */}
       <ForecastStrip />

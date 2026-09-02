@@ -3,6 +3,8 @@ import { LanguageCode } from "./i18n";
 import { getWeather, WeatherData } from "./weatherData";
 import { analyzeRisk, RiskResult } from "./riskEngine";
 
+export type ThemeMode = "light" | "dark" | "accessible";
+
 export interface NotificationItem {
   id: number;
   time: string;
@@ -15,6 +17,8 @@ export interface NotificationItem {
 interface WeatherGPTContextType {
   lang: LanguageCode;
   setLang: (lang: LanguageCode) => void;
+  theme: ThemeMode;
+  setTheme: (theme: ThemeMode) => void;
   locationId: string;
   setLocationId: (id: string) => void;
   demoMode: boolean;
@@ -45,6 +49,10 @@ const WeatherGPTContext = createContext<WeatherGPTContextType | undefined>(undef
 export function WeatherGPTProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<LanguageCode>(() => {
     return (localStorage.getItem("wgpt_lang") as LanguageCode) || "en";
+  });
+
+  const [theme, setThemeState] = useState<ThemeMode>(() => {
+    return (localStorage.getItem("wgpt_theme") as ThemeMode) || "light";
   });
 
   const [locationId, setLocationIdState] = useState<string>(() => {
@@ -90,6 +98,23 @@ export function WeatherGPTProvider({ children }: { children: React.ReactNode }) 
     setLangState(newLang);
     localStorage.setItem("wgpt_lang", newLang);
   };
+
+  const setTheme = (newTheme: ThemeMode) => {
+    setThemeState(newTheme);
+    localStorage.setItem("wgpt_theme", newTheme);
+  };
+
+  // Sync theme with document element
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("dark", "accessible");
+
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else if (theme === "accessible") {
+      root.classList.add("dark", "accessible");
+    }
+  }, [theme]);
 
   const setLocationId = (id: string) => {
     setLocationIdState(id);
@@ -197,6 +222,8 @@ export function WeatherGPTProvider({ children }: { children: React.ReactNode }) 
   const value = {
     lang,
     setLang,
+    theme,
+    setTheme,
     locationId,
     setLocationId,
     demoMode,

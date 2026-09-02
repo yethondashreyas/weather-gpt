@@ -3,6 +3,7 @@ import { useWeatherGPT } from "../lib/WeatherGPTContext";
 import { LOCATIONS } from "../lib/weatherData";
 import { WEIGHTS } from "../lib/riskEngine";
 import { LanguageSelector } from "../components/LanguageSelector";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { Globe, MapPin, Play, Sliders, ShieldCheck } from "lucide-react";
 
 export const Settings: React.FC = () => {
@@ -21,8 +22,11 @@ export const Settings: React.FC = () => {
 
       {/* Preferences Cards */}
       <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        {/* Theme & High-Contrast Disaster Mode Toggle */}
+        <ThemeToggle variant="card" />
+
         {/* Location Picker */}
-        <div>
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
           <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center space-x-1.5 mb-2">
             <MapPin className="w-3.5 h-3.5 text-blue-500" />
             <span>Target Location</span>

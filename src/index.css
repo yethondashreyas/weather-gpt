@@ -18,3 +18,48 @@
 .animate-siren-flash {
   animation: sirenFlash 0.7s infinite ease-in-out;
 }
+
+/* Accessibility / High-Contrast Disaster Mode Overrides */
+html.accessible {
+  color-scheme: dark;
+}
+
+html.accessible body,
+html.accessible .bg-slate-50,
+html.accessible .bg-slate-950,
+html.accessible .bg-white,
+html.accessible .dark\:bg-slate-900,
+html.accessible .dark\:bg-slate-950 {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.accessible .border,
+html.accessible .border-slate-200,
+html.accessible .border-slate-700,
+html.accessible .border-slate-800,
+html.accessible .dark\:border-slate-800,
+html.accessible .dark\:border-slate-700 {
+  border-color: #475569 !important;
+  border-width: 1.5px !important;
+}
+
+html.accessible .text-slate-500,
+html.accessible .text-slate-400,
+html.accessible .dark\:text-slate-400 {
+  color: #cbd5e1 !important;
+}
+
+html.accessible button,
+html.accessible a,
+html.accessible select,
+html.accessible input {
+  font-weight: 600 !important;
+}
+
+html.accessible .bg-slate-100,
+html.accessible .dark\:bg-slate-800 {
+  background-color: #0f172a !important;
+  border-color: #64748b !important;
+}
+
