@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWeatherGPT } from "../lib/WeatherGPTContext";
 import { ThemeToggle } from "./ThemeToggle";
+import { t } from "../lib/i18n";
 import {
   Home,
   Map as MapIcon,
@@ -12,14 +13,14 @@ import {
   CloudRain,
   Calendar,
   Settings,
-  Flame,
   Radio,
+  Smartphone,
 } from "lucide-react";
 
 export const BottomNav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { unreadCount, risk, openSiren } = useWeatherGPT();
+  const { unreadCount, risk, openSiren, lang } = useWeatherGPT();
   const [moreOpen, setMoreOpen] = useState(false);
 
   const isCritical = risk.level === "CRITICAL" || risk.score >= 75;
@@ -30,9 +31,30 @@ export const BottomNav: React.FC = () => {
   };
 
   const moreItems = [
-    { path: "/climate", label: "Climate Lens", desc: "Monsoon & cyclone projections", icon: CloudRain },
-    { path: "/risk-history", label: "Risk Timeline", desc: "Past 7-day storm logs", icon: Calendar },
-    { path: "/settings", label: "Settings", desc: "Location, sirens & units", icon: Settings },
+    {
+      path: "/climate",
+      label: t(lang, "climateLens"),
+      desc: t(lang, "climateDesc"),
+      icon: CloudRain,
+    },
+    {
+      path: "/risk-history",
+      label: t(lang, "riskTimeline"),
+      desc: t(lang, "riskTimelineDesc"),
+      icon: Calendar,
+    },
+    {
+      path: "/native",
+      label: t(lang, "nativeCode"),
+      desc: t(lang, "nativeCodeDesc"),
+      icon: Smartphone,
+    },
+    {
+      path: "/settings",
+      label: t(lang, "settingsNav"),
+      desc: t(lang, "settingsNavDesc"),
+      icon: Settings,
+    },
   ];
 
   return (
@@ -49,7 +71,9 @@ export const BottomNav: React.FC = () => {
           >
             <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">More Features</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  {t(lang, "more")}
+                </span>
               </div>
               <button
                 onClick={() => setMoreOpen(false)}
@@ -63,12 +87,12 @@ export const BottomNav: React.FC = () => {
             <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
-                  Display & Contrast Mode
+                  {t(lang, "displayMode")}
                 </span>
                 <ThemeToggle variant="header" />
               </div>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
-                Quick-switch between Light, Dark, and high-visibility Disaster AMOLED mode.
+                {t(lang, "displayModeDesc")}
               </p>
             </div>
 
@@ -86,7 +110,13 @@ export const BottomNav: React.FC = () => {
                         : "bg-slate-50 dark:bg-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                   >
-                    <div className={`p-2 rounded-xl ${active ? "bg-blue-600 text-white" : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300"}`}>
+                    <div
+                      className={`p-2 rounded-xl ${
+                        active
+                          ? "bg-blue-600 text-white"
+                          : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300"
+                      }`}
+                    >
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="flex-1">
@@ -110,10 +140,14 @@ export const BottomNav: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-bold flex items-center space-x-1.5">
-                    <span>Test Emergency Siren</span>
-                    <span className="text-[10px] bg-red-600 text-white px-1.5 py-0.2 rounded-full">Audio</span>
+                    <span>{t(lang, "testSiren")}</span>
+                    <span className="text-[10px] bg-red-600 text-white px-1.5 py-0.2 rounded-full font-mono">
+                      Audio
+                    </span>
                   </div>
-                  <div className="text-xs text-red-500 dark:text-red-400">Trigger high-urgency disaster alarm modal</div>
+                  <div className="text-xs text-red-500 dark:text-red-400">
+                    {t(lang, "testSirenDesc")}
+                  </div>
                 </div>
               </button>
             </div>
@@ -137,8 +171,14 @@ export const BottomNav: React.FC = () => {
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            <Home className={`w-5 h-5 transition-transform ${location.pathname === "/" ? "scale-110" : ""}`} />
-            <span className="text-[11px] mt-0.5 tracking-tight font-medium">Home</span>
+            <Home
+              className={`w-5 h-5 transition-transform ${
+                location.pathname === "/" ? "scale-110" : ""
+              }`}
+            />
+            <span className="text-[11px] mt-0.5 tracking-tight font-medium">
+              {t(lang, "home")}
+            </span>
           </button>
 
           {/* 2. Map (Direct Quick Switch) */}
@@ -151,8 +191,14 @@ export const BottomNav: React.FC = () => {
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            <MapIcon className={`w-5 h-5 transition-transform ${location.pathname === "/map" ? "scale-110" : ""}`} />
-            <span className="text-[11px] mt-0.5 tracking-tight font-medium">Map</span>
+            <MapIcon
+              className={`w-5 h-5 transition-transform ${
+                location.pathname === "/map" ? "scale-110" : ""
+              }`}
+            />
+            <span className="text-[11px] mt-0.5 tracking-tight font-medium">
+              {t(lang, "map")}
+            </span>
           </button>
 
           {/* 3. Chat AI (Center Highlight Quick Switch) */}
@@ -177,7 +223,7 @@ export const BottomNav: React.FC = () => {
                   : "text-slate-500 dark:text-slate-400"
               }`}
             >
-              Chat AI
+              {t(lang, "chat")}
             </span>
           </button>
 
@@ -208,7 +254,9 @@ export const BottomNav: React.FC = () => {
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
               ) : null}
             </div>
-            <span className="text-[11px] mt-0.5 tracking-tight font-medium">Alerts</span>
+            <span className="text-[11px] mt-0.5 tracking-tight font-medium">
+              {t(lang, "alerts")}
+            </span>
           </button>
 
           {/* 5. More (Secondary Options) */}
@@ -216,13 +264,18 @@ export const BottomNav: React.FC = () => {
             id="nav-btn-more"
             onClick={() => setMoreOpen(!moreOpen)}
             className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-2xl transition-all min-h-[48px] relative ${
-              moreOpen || ["/climate", "/risk-history", "/settings"].includes(location.pathname)
+              moreOpen ||
+              ["/climate", "/risk-history", "/settings", "/native"].includes(
+                location.pathname
+              )
                 ? "text-blue-600 dark:text-blue-400 font-bold bg-blue-50/80 dark:bg-blue-950/50"
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <Menu className="w-5 h-5" />
-            <span className="text-[11px] mt-0.5 tracking-tight font-medium">More</span>
+            <span className="text-[11px] mt-0.5 tracking-tight font-medium">
+              {t(lang, "more")}
+            </span>
           </button>
         </div>
       </nav>

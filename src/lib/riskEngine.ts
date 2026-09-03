@@ -38,7 +38,7 @@ function clamp(val: number, min = 0, max = 1): number {
   return Math.max(min, Math.min(max, val));
 }
 
-export function analyzeRisk(weather: WeatherData): RiskResult {
+export function analyzeRisk(weather: WeatherData, weights: typeof WEIGHTS = WEIGHTS): RiskResult {
   const {
     rainfall_intensity,
     rain_probability,
@@ -57,12 +57,12 @@ export function analyzeRisk(weather: WeatherData): RiskResult {
   const li = clamp(landslide_indicator);
 
   const rawScore =
-    rf * WEIGHTS.rainfall_intensity +
-    pf * WEIGHTS.rain_probability +
-    wf * WEIGHTS.wind_speed +
-    ow * WEIGHTS.official_warning +
-    fi * WEIGHTS.flood_indicator +
-    li * WEIGHTS.landslide_indicator;
+    rf * weights.rainfall_intensity +
+    pf * weights.rain_probability +
+    wf * weights.wind_speed +
+    ow * weights.official_warning +
+    fi * weights.flood_indicator +
+    li * weights.landslide_indicator;
 
   const score = Math.round(clamp(rawScore, 0, 100));
 
@@ -112,12 +112,12 @@ export function analyzeRisk(weather: WeatherData): RiskResult {
   }
 
   const breakdown: RiskBreakdownItem[] = [
-    { key: "rainfall", label: "Rainfall Intensity", points: Math.round(rf * WEIGHTS.rainfall_intensity), max: WEIGHTS.rainfall_intensity },
-    { key: "probability", label: "Rain Probability", points: Math.round(pf * WEIGHTS.rain_probability), max: WEIGHTS.rain_probability },
-    { key: "wind", label: "Wind Speed", points: Math.round(wf * WEIGHTS.wind_speed), max: WEIGHTS.wind_speed },
-    { key: "warning", label: "Official Warning", points: Math.round(ow * WEIGHTS.official_warning), max: WEIGHTS.official_warning },
-    { key: "flood", label: "Flood Indicator", points: Math.round(fi * WEIGHTS.flood_indicator), max: WEIGHTS.flood_indicator },
-    { key: "landslide", label: "Landslide Indicator", points: Math.round(li * WEIGHTS.landslide_indicator), max: WEIGHTS.landslide_indicator },
+    { key: "rainfall", label: "Rainfall Intensity", points: Math.round(rf * weights.rainfall_intensity), max: weights.rainfall_intensity },
+    { key: "probability", label: "Rain Probability", points: Math.round(pf * weights.rain_probability), max: weights.rain_probability },
+    { key: "wind", label: "Wind Speed", points: Math.round(wf * weights.wind_speed), max: weights.wind_speed },
+    { key: "warning", label: "Official Warning", points: Math.round(ow * weights.official_warning), max: weights.official_warning },
+    { key: "flood", label: "Flood Indicator", points: Math.round(fi * weights.flood_indicator), max: weights.flood_indicator },
+    { key: "landslide", label: "Landslide Indicator", points: Math.round(li * weights.landslide_indicator), max: weights.landslide_indicator },
   ];
 
   return {

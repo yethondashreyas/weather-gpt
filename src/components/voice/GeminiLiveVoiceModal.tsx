@@ -252,7 +252,23 @@ export const GeminiLiveVoiceModal: React.FC<GeminiLiveVoiceModalProps> = ({ isOp
 
         {/* Status Text */}
         <h3 className="text-lg font-bold text-center mb-1">
-          {isSpeaking ? "Gemini Speaking..." : isListening ? "Listening to you..." : "Connecting..."}
+          {isSpeaking
+            ? lang === "te"
+              ? "జెమిని మాట్లాడుతోంది..."
+              : lang === "hi"
+              ? "जेमिनी बोल रहा है..."
+              : "Gemini Speaking..."
+            : isListening
+            ? lang === "te"
+              ? "మీ మాట వింటోంది..."
+              : lang === "hi"
+              ? "आपको सुन रहा है..."
+              : "Listening to you..."
+            : lang === "te"
+            ? "కనెక్ట్ అవుతోంది..."
+            : lang === "hi"
+            ? "कनेक्ट हो रहा है..."
+            : "Connecting..."}
         </h3>
         <p className="text-xs text-slate-400 text-center max-w-xs mb-6">{status}</p>
 
@@ -264,8 +280,12 @@ export const GeminiLiveVoiceModal: React.FC<GeminiLiveVoiceModalProps> = ({ isOp
 
         {/* Context Hint */}
         <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-3 text-xs text-slate-300 text-center mb-6">
-          <span className="text-blue-400 font-semibold block mb-0.5">Active Location: {weather.locationName}</span>
-          <span>Risk Level: {risk.level} ({risk.score}/100)</span>
+          <span className="text-blue-400 font-semibold block mb-0.5">
+            {lang === "te" ? "ప్రాంతం:" : lang === "hi" ? "स्थान:" : "Active Location:"} {weather.locationName}
+          </span>
+          <span>
+            {lang === "te" ? "ప్రమాద స్థాయి:" : lang === "hi" ? "जोखिम स्तर:" : "Risk Level:"} {risk.level} ({risk.score}/100)
+          </span>
         </div>
 
         {/* Controls */}
@@ -278,7 +298,13 @@ export const GeminiLiveVoiceModal: React.FC<GeminiLiveVoiceModalProps> = ({ isOp
             className="flex-1 py-3 rounded-xl bg-red-600/80 hover:bg-red-600 text-white font-semibold text-sm transition-colors flex items-center justify-center space-x-2 shadow-lg"
           >
             <MicOff className="w-4 h-4" />
-            <span>End Live Session</span>
+            <span>
+              {lang === "te"
+                ? "లైవ్ సెషన్ ముగించు"
+                : lang === "hi"
+                ? "लाइव सत्र समाप्त करें"
+                : "End Live Session"}
+            </span>
           </button>
         </div>
       </div>

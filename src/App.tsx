@@ -19,6 +19,7 @@ import { Settings } from "./pages/Settings";
 import { RiskHistory } from "./pages/RiskHistory";
 import { RiskMap } from "./pages/RiskMap";
 import { Notifications } from "./pages/Notifications";
+import { NativeCodeHub } from "./pages/NativeCodeHub";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/risk-history" element={<RiskHistory />} />
             <Route path="/map" element={<RiskMap />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/native" element={<NativeCodeHub />} />
           </Route>
         </Routes>
       </BrowserRouter>

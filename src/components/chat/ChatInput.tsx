@@ -95,7 +95,15 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, loading }) 
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={listening ? t(lang, "listening") : t(lang, "placeholder")}
+          placeholder={
+            listening
+              ? lang === "te"
+                ? "వినబడుతోంది..."
+                : lang === "hi"
+                ? "सुन रहा हूँ..."
+                : "Listening..."
+              : t(lang, "chatPlaceholder")
+          }
           disabled={loading}
           className="flex-1 bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white placeholder:text-slate-400 px-2"
         />

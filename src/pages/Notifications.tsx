@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useWeatherGPT } from "../lib/WeatherGPTContext";
-import { LanguageSelector } from "../components/LanguageSelector";
+import { t, translateCity } from "../lib/i18n";
 import { Bell, CheckCheck, Trash2, ShieldAlert } from "lucide-react";
 
 export const Notifications: React.FC = () => {
-  const { notifications, markAllNotificationsRead, clearNotifications } = useWeatherGPT();
+  const { notifications, markAllNotificationsRead, clearNotifications, lang } = useWeatherGPT();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -18,10 +18,13 @@ export const Notifications: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between pt-1">
         <div>
-          <h1 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Alert Log</h1>
-          <p className="text-xs text-slate-500">Critical danger & siren transition history</p>
+          <h1 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+            {t(lang, "notificationsTitle")}
+          </h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {t(lang, "notificationsSubtitle")}
+          </p>
         </div>
-        <LanguageSelector />
       </div>
 
       {notifications.length > 0 && (
@@ -31,14 +34,14 @@ export const Notifications: React.FC = () => {
             className="flex items-center space-x-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline px-2.5 py-1"
           >
             <CheckCheck className="w-3.5 h-3.5" />
-            <span>Mark read</span>
+            <span>{lang === "te" ? "చదివినట్లు గుర్తించు" : lang === "hi" ? "पढ़ा हुआ चिह्नित करें" : "Mark read"}</span>
           </button>
           <button
             onClick={clearNotifications}
             className="flex items-center space-x-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:underline px-2.5 py-1"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>Clear all</span>
+            <span>{t(lang, "clearAll")}</span>
           </button>
         </div>
       )}
@@ -48,9 +51,11 @@ export const Notifications: React.FC = () => {
           <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400">
             <Bell className="w-6 h-6" />
           </div>
-          <h3 className="font-bold text-slate-800 dark:text-slate-200">No Critical Alerts Logged</h3>
-          <p className="text-xs text-slate-500 max-w-xs mx-auto">
-            Critical alerts will automatically trigger when the risk score enters CRITICAL status (≥75) during severe weather scenarios.
+          <h3 className="font-bold text-slate-800 dark:text-slate-200">
+            {t(lang, "noAlerts")}
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
+            {t(lang, "noAlertsDesc")}
           </p>
         </div>
       ) : (
@@ -70,13 +75,15 @@ export const Notifications: React.FC = () => {
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider">
-                    CRITICAL RISK ({notif.score}/100)
+                    {t(lang, "criticalRisk")} ({notif.score}/100)
                   </span>
                   <span className="text-[11px] text-slate-400">{notif.time}</span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">{notif.location}</h4>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">
+                  {translateCity(notif.location, lang)}
+                </h4>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                  Scenario trigger: <span className="font-semibold font-mono">{notif.scenario}</span>
+                  {lang === "te" ? "దృశ్య ట్రిగ్గర్:" : lang === "hi" ? "परिदृश्य ट्रिगर:" : "Scenario trigger:"} <span className="font-semibold font-mono">{notif.scenario}</span>
                 </p>
               </div>
             </div>
