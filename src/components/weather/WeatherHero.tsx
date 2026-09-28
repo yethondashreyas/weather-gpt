@@ -15,11 +15,14 @@ import {
   Sun,
   Eye,
   Cloud,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 export const WeatherHero: React.FC = () => {
   const {
     weather,
+    risk,
     lang,
     demoMode,
     formatTemp,
@@ -27,6 +30,9 @@ export const WeatherHero: React.FC = () => {
     tempUnit,
     refreshRadar,
     lastRefreshed,
+    speak,
+    stopSpeaking,
+    speaking,
   } = useWeatherGPT();
 
   const [refreshing, setRefreshing] = useState(false);
@@ -36,6 +42,15 @@ export const WeatherHero: React.FC = () => {
     setRefreshing(true);
     refreshRadar();
     setTimeout(() => setRefreshing(false), 800);
+  };
+
+  const handleSpeakSummary = () => {
+    if (speaking) {
+      stopSpeaking();
+    } else {
+      const summaryText = `Current weather in ${localizedCity}. Condition: ${localizedCondition}. Temperature: ${weather.temperature} degrees Celsius, feels like ${weather.feels_like} degrees. Rainfall intensity: ${weather.rainfall_intensity} millimeters per hour. Wind speed: ${weather.wind_speed} kilometers per hour. Disaster Risk Level: ${risk.level}, score ${risk.score} out of 100. Recommended action: ${risk.recommended_action}`;
+      speak(summaryText);
+    }
   };
 
   const localizedCondition = translateCondition(weather.condition, lang);
@@ -60,6 +75,29 @@ export const WeatherHero: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-1.5">
+          {/* TTS Audio Speak Summary Button */}
+          <button
+            onClick={handleSpeakSummary}
+            className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center space-x-1 transition-all ${
+              speaking
+                ? "bg-amber-500 text-slate-950 animate-pulse shadow-md"
+                : "bg-blue-600/30 hover:bg-blue-600/50 text-blue-200 border border-blue-500/30"
+            }`}
+            title="Listen to Weather Summary & Active Alerts"
+          >
+            {speaking ? (
+              <>
+                <VolumeX className="w-3.5 h-3.5" />
+                <span>Stop</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-3.5 h-3.5" />
+                <span>Listen</span>
+              </>
+            )}
+          </button>
+
           {/* Unit Switcher Button */}
           <button
             onClick={toggleTempUnit}

@@ -62,8 +62,9 @@ interface WeatherGPTContextType {
   setCustomWeights: (w: typeof WEIGHTS) => void;
   resetWeights: () => void;
   triggerTestAlert: () => void;
+  nativeSimulatorMode: boolean;
+  toggleNativeSimulator: () => void;
   refreshRadar: () => void;
-  lastRefreshed: string;
 }
 
 const WeatherGPTContext = createContext<WeatherGPTContextType | undefined>(undefined);
@@ -124,6 +125,19 @@ export function WeatherGPTProvider({ children }: { children: React.ReactNode }) 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [speaking, setSpeaking] = useState<boolean>(false);
   const [lastRefreshed, setLastRefreshed] = useState<string>("Just now");
+  const [nativeSimulatorMode, setNativeSimulatorMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem("wgpt_native_sim");
+    return saved !== null ? saved === "true" : true;
+  });
+
+  const toggleNativeSimulator = () => {
+    setNativeSimulatorMode((prev) => {
+      const next = !prev;
+      localStorage.setItem("wgpt_native_sim", String(next));
+      showToast(next ? "React Native Mobile Simulator Frame Enabled" : "Standard Web View Enabled");
+      return next;
+    });
+  };
 
   const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
     const saved = localStorage.getItem("wgpt_notifs");
@@ -407,6 +421,8 @@ export function WeatherGPTProvider({ children }: { children: React.ReactNode }) 
     setCustomWeights,
     resetWeights,
     triggerTestAlert,
+    nativeSimulatorMode,
+    toggleNativeSimulator,
     refreshRadar,
     lastRefreshed,
   };

@@ -137,7 +137,7 @@ export const HourlyTrendsWidget: React.FC = () => {
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
         <div className="flex items-center space-x-2">
           <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-400">
             <TrendingUp className="w-4 h-4" />
@@ -146,10 +146,10 @@ export const HourlyTrendsWidget: React.FC = () => {
             <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center space-x-1.5">
               <span>24-Hour Weather Trends</span>
               <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-                Live Forecast
+                Live
               </span>
             </h3>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400">Hourly diurnal temperature & humidity curve</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">Hourly temperature & humidity curve</p>
           </div>
         </div>
 
@@ -188,49 +188,6 @@ export const HourlyTrendsWidget: React.FC = () => {
             <Droplets className="w-3 h-3 text-cyan-500" />
             <span>Humidity</span>
           </button>
-        </div>
-      </div>
-
-      {/* Summary Chips */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
-        <div className="bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-900/40 rounded-xl p-2.5 flex items-center justify-between">
-          <div>
-            <div className="text-[10px] font-medium text-amber-700 dark:text-amber-300">Temp Range</div>
-            <div className="text-xs font-bold text-amber-900 dark:text-amber-100 font-mono mt-0.5">
-              {stats.minTemp}° – {stats.maxTemp}°C
-            </div>
-          </div>
-          <Thermometer className="w-4 h-4 text-amber-500" />
-        </div>
-
-        <div className="bg-orange-50/70 dark:bg-orange-950/30 border border-orange-200/60 dark:border-orange-900/40 rounded-xl p-2.5 flex items-center justify-between">
-          <div>
-            <div className="text-[10px] font-medium text-orange-700 dark:text-orange-300">24h Avg Temp</div>
-            <div className="text-xs font-bold text-orange-900 dark:text-orange-100 font-mono mt-0.5">
-              {stats.avgTemp}°C
-            </div>
-          </div>
-          <Sparkles className="w-4 h-4 text-orange-500" />
-        </div>
-
-        <div className="bg-cyan-50/70 dark:bg-cyan-950/30 border border-cyan-200/60 dark:border-cyan-900/40 rounded-xl p-2.5 flex items-center justify-between">
-          <div>
-            <div className="text-[10px] font-medium text-cyan-700 dark:text-cyan-300">Humidity Range</div>
-            <div className="text-xs font-bold text-cyan-900 dark:text-cyan-100 font-mono mt-0.5">
-              {stats.minHum}% – {stats.maxHum}%
-            </div>
-          </div>
-          <Droplets className="w-4 h-4 text-cyan-500" />
-        </div>
-
-        <div className="bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/60 dark:border-blue-900/40 rounded-xl p-2.5 flex items-center justify-between">
-          <div>
-            <div className="text-[10px] font-medium text-blue-700 dark:text-blue-300">24h Avg Moisture</div>
-            <div className="text-xs font-bold text-blue-900 dark:text-blue-100 font-mono mt-0.5">
-              {stats.avgHum}%
-            </div>
-          </div>
-          <TrendingUp className="w-4 h-4 text-blue-500" />
         </div>
       </div>
 

@@ -60,36 +60,42 @@ export const ForecastStrip: React.FC = () => {
 
       {/* Hourly Forecast Carousel */}
       {activeTab === "hourly" && (
-        <div className="grid grid-cols-6 gap-2 overflow-x-auto pb-1">
-          {weather.forecast.map((slot, idx) => {
-            const isSelected = selectedSlot === idx;
-            return (
-              <button
-                key={idx}
-                onClick={() => {
-                  setSelectedSlot(isSelected ? null : idx);
-                  showToast(`${slot.t}: ${formatTemp(slot.temp)}, ${slot.rain}% ${t(lang, "rainChance")}`);
-                }}
-                className={`flex flex-col items-center justify-center p-2 rounded-2xl border transition-all text-center ${
-                  isSelected
-                    ? "bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-600 ring-2 ring-blue-400/40"
-                    : "bg-slate-50 dark:bg-slate-800/60 border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-800"
-                }`}
-              >
-                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">{slot.t}</span>
-                <div className="my-1.5">
-                  <WeatherIcon name={slot.icon} className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                </div>
-                <span className="text-xs font-bold text-slate-900 dark:text-white">
-                  {formatTemp(slot.temp)}
-                </span>
-                <span className="text-[10px] text-blue-600 dark:text-blue-400 font-bold mt-0.5 flex items-center space-x-0.5">
-                  <Umbrella className="w-2.5 h-2.5" />
-                  <span>{slot.rain}%</span>
-                </span>
-              </button>
-            );
-          })}
+        <div className="space-y-3">
+          <div className="grid grid-cols-4 gap-2">
+            {weather.forecast.slice(0, 4).map((slot, idx) => {
+              const isSelected = selectedSlot === idx;
+              const slotRisk = idx === 0 || idx === 1 ? "🔴" : idx === 2 ? "🟠" : "🟡";
+              return (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setSelectedSlot(isSelected ? null : idx);
+                    showToast(`${slot.t}: ${formatTemp(slot.temp)}, ${slot.rain}% rain`);
+                  }}
+                  className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border transition-all text-center ${
+                    isSelected
+                      ? "bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-600 ring-2 ring-blue-400/40"
+                      : "bg-slate-50 dark:bg-slate-800/60 border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  }`}
+                >
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">
+                    {idx === 0 ? "NOW" : `+${idx}H`}
+                  </span>
+                  <span className="text-base my-1">{slotRisk}</span>
+                  <span className="text-xs font-bold text-slate-900 dark:text-white font-mono">
+                    {formatTemp(slot.temp)}
+                  </span>
+                  <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold mt-0.5">
+                    {slot.rain}%
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <span>Risk expected to decrease after +3h.</span>
+            <span className="font-mono text-[10px] text-blue-500">Live Telemetry</span>
+          </div>
         </div>
       )}
 
